@@ -1,0 +1,92 @@
+#include <bits/stdc++.h>
+#define loop(n) for(int i=0;i<=n;++i)
+using namespace std;
+int n;
+struct UnionFind
+{
+   vector<int>rankk;
+   vector<int>parent;
+   int forests;
+   UnionFind(int n)
+   {
+       rankk=vector<int>(n+1);
+       parent=vector<int>(n+1);
+       loop(n)
+       {
+           parent[i]=i;
+           rankk[i]=1;
+       }
+
+   }
+
+   int find_set(int x)
+   {
+       if(x==parent[x]) return x;
+       return parent[x]=find_set(parent[x]);
+   }
+
+   void link(int x,int y)
+   {
+       if(rankk[x]>rankk[y])  swap(x,y);
+       parent[x]=y;
+       if(rankk[x]==rankk[y]) rankk[y]++;
+   }
+
+   bool union_sets(int x,int y)
+   {
+       x=find_set(x),y=find_set(y);
+       if(x!=y)
+       {
+         link(x,y);
+         forests--;
+       }
+       return x!=y;
+   }
+};
+struct edge
+{
+
+    int from,to,w;
+    edge(int f,int t,int ww)
+    {
+        from=f;
+        to=t;
+        w=ww;
+    }
+    bool operator <(const edge &e) const
+    {
+      return w>e.w;
+    }
+};
+
+pair<int,vector<edge>>kruskal_MST(vector<edge>adjlist,int n)
+{
+    UnionFind uf(n);
+    vector<edge>edges;
+    priority_queue<edge>q;
+    int mstcost=0;
+    for(int  j=0;j<adjlist.size();++j) q.push(adjlist[j]);
+    while(!q.empty())
+    {
+        edge e=q.top();
+        q.pop();
+        if(uf.union_sets(e.from,e.to))
+        {
+            mstcost+=e.w;
+            edges.push_back(e);
+        }
+
+
+    }
+    cout<<edges.size()<<endl;
+    if(edges.size()!=n-1) return make_pair(-00,vector<edge>());
+    return make_pair(mstcost,edges);
+
+}
+
+int main()
+{
+
+    return 0;
+
+}
