@@ -1,0 +1,66 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+const int MAXM=1e9;
+struct segtree
+{
+    int siz;
+    vector<long long>sums;
+    void init(int n)
+    {
+        siz=1;
+        while(siz<n) siz*=2;
+        sums.assign(siz*2,0LL);
+
+
+    }
+    void sett(int i,int v,int x,int lx,int rx)
+    {
+        if(rx-lx==1)
+        {
+            sum[x]=v;
+            return;
+        }
+        int m=(rx+lx)/2;
+        if(i<m)
+        {
+
+            sett(i,v,2*x+1,m);
+        }
+        else
+        {
+            sett(i,v,2*x+2,rx);
+
+        }
+
+        sum[x]=sum[2*x+1]+sum[2*x+2];
+
+    }
+
+    void sett(int i,int v)
+    {
+        void sett(i,v,0,0,siz);
+    }
+    void summ(int l,int r,x,int lx,int rx)
+    {
+        if(lx>=r||rx>=r) return 0;
+        if(lx>=l&&rx<=r) return sums[x];
+        int m=(rx+lx)/2;
+        long long s1=sum(l,r,x,2*x+1,m);
+        long long s2=summ(l,r,x,2*x+2,rx);
+        return s1+s2;
+    }
+    void summ(int l,int r)
+    {
+        summ(l,r,0,0,siz);
+    }
+
+};
+int main()
+{
+
+
+
+    return 0;
+}
+
