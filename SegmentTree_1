@@ -1,7 +1,5 @@
 #include <bits/stdc++.h>
-
 using namespace std;
-const int MAXM=1e9;
 struct segtree
 {
     int siz;
@@ -18,49 +16,41 @@ struct segtree
     {
         if(rx-lx==1)
         {
-            sum[x]=v;
+            sums[x]=v;
             return;
         }
         int m=(rx+lx)/2;
         if(i<m)
         {
 
-            sett(i,v,2*x+1,m);
+            sett(i,v,2*x+1,lx,m);
         }
         else
         {
-            sett(i,v,2*x+2,rx);
+            sett(i,v,2*x+2,m,rx);
 
         }
 
-        sum[x]=sum[2*x+1]+sum[2*x+2];
+         sums[x]=sums[2*x+1]+sums[2*x+2];
 
     }
 
     void sett(int i,int v)
     {
-        void sett(i,v,0,0,siz);
+         sett(i,v,0,0,siz);
     }
-    void summ(int l,int r,x,int lx,int rx)
+    long long summ(int l,int r,int x,int lx,int rx)
     {
-        if(lx>=r||rx>=r) return 0;
+        if(lx>=r||l>=rx) return 0;
         if(lx>=l&&rx<=r) return sums[x];
         int m=(rx+lx)/2;
-        long long s1=sum(l,r,x,2*x+1,m);
-        long long s2=summ(l,r,x,2*x+2,rx);
+        long long s1=summ(l,r,2*x+1,lx,m);
+        long long s2=summ(l,r,2*x+2,m,rx);
         return s1+s2;
     }
-    void summ(int l,int r)
+    long long summ(int l,int r)
     {
         summ(l,r,0,0,siz);
     }
 
 };
-int main()
-{
-
-
-
-    return 0;
-}
-
