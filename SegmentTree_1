@@ -1,8 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 struct segtree
-{
-    int siz;
+{ int siz;
     vector<long long>sums;
     void init(int n)
     {
@@ -10,6 +9,29 @@ struct segtree
         while(siz<n) siz*=2;
         sums.assign(siz*2,0LL);
 
+
+    }
+
+    void build(vector<int>&a)
+    {
+        build(a,0,0,siz);
+    }
+
+    void build(vector<int>&a,int x,int lx,int rx)
+    {
+        if(rx-lx==1)
+        {
+            if(lx<(int)a.size())
+            {
+                sums[x]=a[lx];
+            }
+            return ;
+        }
+
+        int m=(lx+rx)/2;
+        build(a,2*x+1,lx,m);
+        build(a,2*x+2,m,rx);
+        sums[x]=sums[2*x+1]+sums[2*x+2];
 
     }
     void sett(int i,int v,int x,int lx,int rx)
@@ -31,26 +53,13 @@ struct segtree
 
         }
 
-         sums[x]=sums[2*x+1]+sums[2*x+2];
+        sums[x]=sums[2*x+1]+sums[2*x+2];
 
     }
 
     void sett(int i,int v)
     {
-         sett(i,v,0,0,siz);
-    }
-    long long summ(int l,int r,int x,int lx,int rx)
-    {
-        if(lx>=r||l>=rx) return 0;
-        if(lx>=l&&rx<=r) return sums[x];
-        int m=(rx+lx)/2;
-        long long s1=summ(l,r,2*x+1,lx,m);
-        long long s2=summ(l,r,2*x+2,m,rx);
-        return s1+s2;
-    }
-    long long summ(int l,int r)
-    {
-        summ(l,r,0,0,siz);
+        sett(i,v,0,0,siz);
     }
 
 };
